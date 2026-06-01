@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>要塞 YŌSAI — S1.C1 — Cas Zéro — Récit</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=Cinzel+Decorative:wght@400;700&family=Sawarabi+Mincho&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #06060c;
+    --page: #0c0c16;
+    --gold: #c9a84c;
+    --gold-dim: #7a5f28;
+    --white: #ede9de;
+    --grey: #5a5a6e;
+    --ink: #d8d4c8;
+    --muted: rgba(216,212,200,0.6);
+    --thought: rgba(106,63,255,0.8);
+    --aura: rgba(106,63,255,0.1);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+
+  body {
+    background:var(--black);
+    color:var(--ink);
+    font-family:'Sawarabi Mincho', serif;
+    overflow-x:hidden;
+  }
+
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events:none; z-index:999; opacity:0.5;
+  }
+
+  /* ═══ COVER ═══ */
+  .cover {
+    min-height:100vh;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    text-align:center; padding:60px 24px;
+    position:relative; overflow:hidden;
+    border-bottom:1px solid rgba(201,168,76,0.08);
+  }
+
+  .cover-bg {
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 50% 70% at 50% 40%, rgba(10,5,30,0.98) 0%, transparent 65%),
+      radial-gradient(ellipse 40% 30% at 15% 85%, rgba(20,5,5,0.5) 0%, transparent 60%),
+      var(--black);
+  }
+
+  .cover-lines {
+    position:absolute; inset:0;
+    background-image:repeating-linear-gradient(
+      0deg, transparent, transparent 59px,
+      rgba(201,168,76,0.02) 60px
+    );
+  }
+
+  .cover-kanji-bg {
+    position:absolute;
+    font-family:'Shippori Mincho', serif;
+    font-size:50vw; font-weight:800;
+    color:rgba(201,168,76,0.02);
+    line-height:1; top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    pointer-events:none; user-select:none;
+  }
+
+  .cc { position:relative; z-index:2; }
+
+  .c-meta {
+    font-family:'Space Mono', monospace;
+    font-size:9px; letter-spacing:7px;
+    color:var(--gold-dim); margin-bottom:20px;
+    opacity:0; animation:fu 0.8s 0.2s forwards;
+  }
+
+  .c-kanji {
+    font-family:'Shippori Mincho', serif;
+    font-size:clamp(56px,13vw,130px); font-weight:800;
+    color:var(--gold); line-height:1;
+    text-shadow:0 0 80px rgba(201,168,76,0.2);
+    opacity:0; animation:fu 0.8s 0.4s forwards;
+  }
+
+  .c-title {
+    font-family:'Cinzel Decorative', serif;
+    font-size:clamp(14px,2.5vw,24px);
+    letter-spacing:8px; color:var(--white);
+    margin-top:6px;
+    opacity:0; animation:fu 0.8s 0.6s forwards;
+  }
+
+  .c-div {
+    width:140px; height:1px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    margin:24px auto;
+    opacity:0; animation:fu 0.8s 0.8s forwards;
+  }
+
+  .c-chapter {
+    font-family:'Shippori Mincho', serif;
+    font-size:clamp(18px,3vw,30px); font-weight:800;
+    color:var(--white);
+    opacity:0; animation:fu 0.8s 1s forwards;
+  }
+
+  .c-chapter-jp {
+    font-family:'Shippori Mincho', serif;
+    font-size:14px; font-weight:600;
+    color:rgba(201,168,76,0.4); margin-top:4px;
+    opacity:0; animation:fu 0.8s 1.2s forwards;
+  }
+
+  .c-type {
+    font-family:'Space Mono', monospace;
+    font-size:9px; letter-spacing:5px;
+    color:var(--grey); margin-top:16px;
+    opacity:0; animation:fu 0.8s 1.4s forwards;
+  }
+
+  .c-scroll {
+    position:absolute; bottom:32px; left:50%;
+    transform:translateX(-50%);
+    display:flex; flex-direction:column;
+    align-items:center; gap:8px;
+    opacity:0; animation:fu 0.8s 2s forwards;
+  }
+
+  .c-scroll span {
+    font-family:'Space Mono', monospace;
+    font-size:8px; letter-spacing:4px; color:var(--grey);
+  }
+
+  .c-scroll-line {
+    width:1px; height:36px;
+    background:linear-gradient(180deg,var(--gold),transparent);
+    animation:pulse 2s infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:0.3;} 50%{opacity:1;} }
+  @keyframes fu { from{opacity:0;transform:translateY(12px);} to{opacity:1;transform:translateY(0);} }
+
+  /* ═══ RÉCIT ═══ */
+  .recit {
+    max-width:720px; margin:0 auto;
+    padding:80px 24px 120px;
+  }
+
+  /* PARTIE */
+  .partie {
+    margin-bottom:80px;
+    opacity:0; transform:translateY(16px);
+    transition:opacity 0.7s, transform 0.7s;
+  }
+  .partie.visible { opacity:1; transform:translateY(0); }
+
+  .partie-header {
+    display:flex; align-items:center; gap:20px;
+    margin-bottom:40px;
+  }
+
+  .partie-num {
+    font-family:'Cinzel Decorative', serif;
+    font-size:10px; letter-spacing:3px;
+    color:var(--gold-dim); white-space:nowrap;
+  }
+
+  .partie-line {
+    flex:1; height:1px;
+    background:linear-gradient(90deg,rgba(201,168,76,0.2),transparent);
+  }
+
+  .partie-title {
+    font-family:'Shippori Mincho', serif;
+    font-size:clamp(16px,2.5vw,22px); font-weight:800;
+    color:var(--gold); margin-bottom:4px;
+  }
+
+  /* PROSE */
+  .prose p {
+    font-size:clamp(15px,2.2vw,17px);
+    line-height:2; color:var(--ink);
+    margin-bottom:28px;
+    text-indent:2em;
+  }
+
+  .prose p:first-child { text-indent:0; }
+
+  .prose p.no-indent { text-indent:0; }
+
+  /* PENSÉE INTERNE */
+  .pensee {
+    font-family:'Sawarabi Mincho', serif;
+    font-size:clamp(14px,2vw,16px);
+    line-height:1.9; color:var(--thought);
+    font-style:italic;
+    padding:16px 0 16px 24px;
+    border-left:2px solid rgba(106,63,255,0.3);
+    margin:28px 0;
+    background:var(--aura);
+    padding:16px 20px 16px 24px;
+  }
+
+  /* DIALOGUE */
+  .dialogue-block {
+    margin:28px 0;
+    padding:20px 24px;
+    background:rgba(255,255,255,0.015);
+    border-left:3px solid rgba(201,168,76,0.2);
+  }
+
+  .dial-line {
+    margin-bottom:16px;
+  }
+
+  .dial-line:last-child { margin-bottom:0; }
+
+  .dial-who {
+    font-family:'Space Mono', monospace;
+    font-size:9px; letter-spacing:3px;
+    color:var(--gold-dim); margin-bottom:5px;
+    text-transform:uppercase;
+  }
+
+  .dial-who.kael { color:var(--gold); }
+  .dial-who.amara { color:#e8a44c; }
+  .dial-who.officiel { color:var(--grey); }
+  .dial-who.foule { color:rgba(216,212,200,0.35); }
+  .dial-who.ryo { color:#9a7aff; }
+  .dial-who.narration { color:rgba(106,63,255,0.7); }
+
+  .dial-text {
+    font-size:clamp(15px,2.2vw,17px);
+    line-height:1.8; color:var(--ink);
+  }
+
+  /* RUPTURE */
+  .rupture {
+    text-align:center;
+    padding:28px 0;
+    font-family:'Shippori Mincho', serif;
+    font-size:28px; font-weight:800;
+    color:rgba(201,168,76,0.15);
+    letter-spacing:16px;
+  }
+
+  /* AURA NOTE */
+  .aura-note {
+    background:rgba(106,63,255,0.06);
+    border:1px solid rgba(106,63,255,0.15);
+    border-left:3px solid rgba(106,63,255,0.4);
+    padding:16px 20px; margin:28px 0;
+    font-size:13px; line-height:1.8;
+    color:rgba(106,63,255,0.7); font-style:italic;
+  }
+
+  /* OUVERTURE NARRATIVE — gros caractère */
+  .opening-letter {
+    float:left;
+    font-family:'Shippori Mincho', serif;
+    font-size:72px; font-weight:800;
+    color:var(--gold); line-height:0.85;
+    margin-right:8px; margin-top:8px;
+    text-shadow:0 0 40px rgba(201,168,76,0.15);
+  }
+
+  /* QUOTE FINALE */
+  .final-quote {
+    border-top:1px solid rgba(201,168,76,0.15);
+    padding:40px 0 0;
+    margin-top:60px;
+    text-align:center;
+  }
+
+  .fq-text {
+    font-family:'Sawarabi Mincho', serif;
+    font-size:clamp(15px,2vw,18px);
+    font-style:italic;
+    color:rgba(237,233,222,0.4); line-height:1.9;
+    max-width:500px; margin:0 auto;
+  }
+
+  .fq-cite {
+    font-family:'Space Mono', monospace;
+    font-size:9px; letter-spacing:4px;
+    color:var(--gold-dim); margin-top:16px;
+    display:block;
+  }
+
+  /* FOOTER */
+  .recit-footer {
+    text-align:center;
+    padding:60px 20px 40px;
+    border-top:1px solid rgba(201,168,76,0.06);
+  }
+
+  .rf-kanji {
+    font-family:'Shippori Mincho', serif;
+    font-size:40px; font-weight:800;
+    color:rgba(201,168,76,0.1); display:block; margin-bottom:10px;
+  }
+
+  .rf-text {
+    font-family:'Space Mono', monospace;
+    font-size:8px; letter-spacing:4px; color:var(--grey);
+  }
+
+  /* NEXT */
+  .next-chapter {
+    background:rgba(201,168,76,0.04);
+    border:1px solid rgba(201,168,76,0.12);
+    padding:24px 28px; margin:40px 0 0;
+    display:flex; align-items:center; gap:20px;
+  }
+
+  .nc-arrow {
+    font-family:'Cinzel Decorative', serif;
+    font-size:20px; color:rgba(201,168,76,0.3);
+    flex-shrink:0;
+  }
+
+  .nc-info { flex:1; }
+
+  .nc-label {
+    font-family:'Space Mono', monospace;
+    font-size:8px; letter-spacing:3px;
+    color:var(--gold-dim); margin-bottom:4px;
+  }
+
+  .nc-title {
+    font-family:'Shippori Mincho', serif;
+    font-size:15px; font-weight:800; color:var(--white);
+  }
+
+  .nc-sub {
+    font-size:12px; color:var(--grey); margin-top:2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-lines"></div>
+  <div class="cover-kanji-bg">零</div>
+  <div class="cc">
+    <div class="c-meta">要塞 YŌSAI · SAISON 1 · RÉCIT NARRATIF</div>
+    <div class="c-kanji">要塞</div>
+    <div class="c-title">YŌSAI</div>
+    <div class="c-div"></div>
+    <div class="c-chapter">Chapitre 1 — Cas Zéro</div>
+    <div class="c-chapter-jp">「零ノ記録」— Le Dossier du Vide</div>
+    <div class="c-type">RÉCIT NARRATIF · PREMIÈRE VERSION</div>
+  </div>
+  <div class="c-scroll">
+    <span>LIRE</span>
+    <div class="c-scroll-line"></div>
+  </div>
+</div>
+
+<!-- RÉCIT -->
+<div class="recit">
+
+  <!-- ═══ PARTIE I ═══ -->
+  <div class="partie" id="p1">
+    <div class="partie-header">
+      <span class="partie-num">PARTIE I</span>
+      <div class="partie-line"></div>
+    </div>
+    <div class="partie-title">La Salle Blanche</div>
+
+    <div class="prose">
+      <p><span class="opening-letter">L</span>e bâtiment n'avait pas de nom visible sur sa façade. Juste un numéro — 04 — gravé dans la pierre grise au-dessus d'une entrée aussi froide que l'air de ce matin de novembre. Les enfants arrivaient par groupes, encadrés par des adultes en uniformes sombres qui ne leur parlaient pas. Ils portaient tous un dossard numéroté accroché à l'épaule gauche. Certains se tenaient la main. Certains pleuraient déjà. Certains riaient encore — les derniers à ne pas comprendre.</p>
+
+      <p>Kael Kurosawa, lui, regardait les murs.</p>
+
+      <p>Pas les enfants. Pas les uniformes. Les murs — leur texture, l'épaisseur du béton, les caméras posées en hauteur à intervalles précis de sept mètres. Il avait compté. Il comptait toujours. C'était une habitude qu'il n'avait pas choisie, comme on ne choisit pas la couleur de ses yeux. Les données entraient et restaient. Tout restait, dans la tête de Kael — chaque visage croisé, chaque phrase entendue, chaque détail que les autres laissaient passer comme l'eau entre les doigts. Lui, il ne laissait rien passer.</p>
+
+      <p>Il avait dix ans. Son dossard portait le numéro 047.</p>
+    </div>
+
+    <div class="aura-note">À ce moment précis, un homme en uniforme qui contrôlait la file ralentit le pas en passant près de Kael. Il ne s'arrêta pas. Il ne regarda pas le garçon. Mais quelque chose dans sa démarche changea — une infime hésitation, comme si l'air s'était épaissi autour de lui. Il continua sa route sans se retourner, les mains légèrement serrées. Il ne sut jamais pourquoi.</div>
+
+    <div class="prose">
+      <p>La salle en elle-même était immense — un hangar repeint en blanc, transformé en quelque chose entre l'hôpital militaire et la salle d'audience. Des centaines d'enfants en files parallèles, séparés par des barrières basses en métal. Au fond, la machine.</p>
+
+      <p>Kael l'avait repérée en entrant. On ne pouvait pas la manquer. Une capsule cylindrique transparente, grande comme une cabine téléphonique ancienne, entourée de capteurs disposés en couronne. Des écrans l'encadraient — une demi-douzaine, chacun orienté différemment, comme des yeux qui regardaient de tous les côtés à la fois. Des officiels en blanc se tenaient à proximité, tablettes en main, stylos prêts. Ils n'avaient pas l'air de s'ennuyer. Ils avaient l'air d'attendre quelque chose de précis — comme des chasseurs dans un affût.</p>
+
+      <p>Kael nota tout ça en deux secondes. Puis son regard glissa sur sa gauche.</p>
+    </div>
+
+    <div class="dialogue-block">
+      <div class="dial-line">
+        <div class="dial-who amara">AMARA</div>
+        <div class="dial-text">— Nii-san… t'as pas peur ?</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Amara avait sept ans. Il était plus petit que Kael d'une tête entière — une différence qui semblait plus grande qu'elle ne l'était, parce qu'Amara regardait toujours en haut quand il lui parlait. Il avait les yeux ambrés, presque dorés dans certaines lumières, et une façon de froncer légèrement les sourcils quand il s'inquiétait qui le faisait ressembler davantage à sa mère qu'il ne l'aurait voulu. Il tirait sur la manche de Kael depuis qu'ils étaient entrés dans le bâtiment. Pas fort — juste assez pour signifier qu'il était là. Qu'il avait besoin de savoir que Kael était là aussi.</p>
+
+      <p>Kael baissa les yeux vers lui. Une fraction de seconde.</p>
+    </div>
+
+    <div class="dialogue-block">
+      <div class="dial-line">
+        <div class="dial-who kael">KAEL</div>
+        <div class="dial-text">— Non.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Ce n'était pas une façade. Ce n'était pas le courage forcé d'un enfant qui cache sa peur derrière un mot court. C'était la vérité simple — Kael ne ressentait pas de peur en ce moment. Il ressentait de la curiosité, mêlée d'une certaine forme d'anticipation analytique. Qu'est-ce que la machine allait trouver ? Qu'est-ce que la machine allait <em>dire</em> de lui ?</p>
+
+      <p>Il ne savait pas encore que la machine n'allait rien dire du tout.</p>
+    </div>
+  </div>
+
+  <div class="rupture">— —</div>
+
+  <!-- ═══ PARTIE II ═══ -->
+  <div class="partie" id="p2">
+    <div class="partie-header">
+      <span class="partie-num">PARTIE II</span>
+      <div class="partie-line"></div>
+    </div>
+    <div class="partie-title">Ce que la Machine Cherche</div>
+
+    <div class="prose">
+      <p>Le test de classification n'était pas nouveau. L'État japonais le pratiquait depuis deux cents ans — d'abord en secret, puis officiellement depuis trois générations. Chaque enfant, à dix ans, passait dans la machine. La machine mesurait l'Aura. Elle lui attribuait un rang, entre dix et un. Dix pour les plus faibles. Un pour ceux dont la puissance était exceptionnelle. Et au-delà du rang un — les non classés, ceux dont l'Aura dépassait les paramètres connus.</p>
+
+      <p>Le rang déterminait presque tout ce qui suivait. L'école. Les opportunités. La façon dont les autres vous regardaient dans la rue. C'était une donnée objective, disait l'État. Un reflet fidèle de ce qu'on était. Kael avait appris depuis longtemps que les données objectives étaient rarement aussi objectives qu'on le prétendait — mais il gardait cette opinion pour lui.</p>
+
+      <p>Il regarda les enfants passer dans la capsule, un par un.</p>
+
+      <p>Le premier — un garçon de onze ans, épaules rentrées, qui mordait l'intérieur de sa joue — ressortit avec un Rang 6 affiché en bleu sur l'écran principal. Des murmures dans la salle. Sa mère, dans les tribunes du fond, poussa un soupir que Kael entendit distinctement malgré la distance. Soulagement ou déception, difficile à dire.</p>
+
+      <p>Kael lisait autre chose sur l'écran. Les données défilaient avant de se figer sur le chiffre final — type d'Aura, fréquence estimée, potentiel d'évolution, portée maximale. Tout disparaissait en quelques secondes, remplacé par le rang seul. Mais quelques secondes suffisaient à Kael.</p>
+    </div>
+
+    <div class="pensee">Aura cinétique. Fréquence 340 hertz. Portée maximale estimée à quatre mètres. Potentiel d'évolution : moyen. Ils ont analysé cet enfant en huit secondes comme on pèse de la viande.</div>
+
+    <div class="prose">
+      <p>Il n'y avait pas de mépris dans cette pensée. Juste un constat. Kael ne méprisait pas souvent — le mépris demandait une investissement émotionnel qu'il réservait à autre chose.</p>
+
+      <p>Un deuxième enfant. Rang 8. Rires dans la file — étouffés, mais là. La fillette qui sortait de la capsule regardait ses chaussures. Kael nota ça aussi. Comment elle rentrait les épaules exactement comme le premier garçon, mais en sens inverse — plus profondément, comme si elle essayait de disparaître dans elle-même.</p>
+
+      <p>Un troisième. Rang 3. Applaudissements. Des officiels qui prenaient des notes rapidement, l'air soudainement intéressés. Un parent qui se levait dans les tribunes.</p>
+    </div>
+
+    <div class="dialogue-block">
+      <div class="dial-line">
+        <div class="dial-who officiel">OFFICIEL 1 (à voix basse, à son collègue)</div>
+        <div class="dial-text">— Notez-le. L'Œil Blanc voudra voir ce dossier.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Kael avait entendu. Il mémorisa le visage de l'officiel. La façon dont il tenait son stylo — légèrement incliné vers la gauche, comme quelqu'un d'ambidextre qui écrit principalement de la droite. Le badge partiel visible sous sa veste — pas tout à fait le même format que ceux des autres. Une faction différente, peut-être. Ou quelque chose au-dessus des factions.</p>
+
+      <p>Il finit par porter son attention sur Amara, qui regardait le grand écran avec des yeux écarquillés.</p>
+    </div>
+
+    <div class="dialogue-block">
+      <div class="dial-line">
+        <div class="dial-who amara">AMARA</div>
+        <div class="dial-text">— Si t'as un mauvais rang… qu'est-ce qui se passe ?</div>
+      </div>
+      <div class="dial-line">
+        <div class="dial-who kael">KAEL</div>
+        <div class="dial-text">— Rien. Ça ne change rien à ce qu'on est.</div>
+      </div>
+      <div class="dial-line">
+        <div class="dial-who amara">AMARA</div>
+        <div class="dial-text">— Mais ça change ce que les autres pensent qu'on est.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Kael regarda son frère. Amara avait dit ça d'une voix égale, presque neutre — pas pour faire de l'effet, mais parce que c'était ce qu'il pensait vraiment. Seven ans, et il avait déjà compris cette nuance-là. Kael nota mentalement que son frère était plus perspicace qu'il n'en donnait l'impression.</p>
+
+      <p>Il ne répondit pas. Il n'avait rien à ajouter qui améliorerait ce qu'Amara venait de dire.</p>
+
+      <p>À la place, il prit doucement la main de son frère.</p>
+
+      <p>Amara s'arrêta de froncer les sourcils.</p>
+    </div>
+  </div>
+
+  <div class="rupture">— —</div>
+
+  <!-- ═══ PARTIE III ═══ -->
+  <div class="partie" id="p3">
+    <div class="partie-header">
+      <span class="partie-num">PARTIE III</span>
+      <div class="partie-line"></div>
+    </div>
+    <div class="partie-title">Sujet 047</div>
+
+    <div class="prose">
+      <p>Son tour vint quarante-sept minutes plus tard — logique, pour le numéro 047.</p>
+
+      <p>L'officiel principal consulta sa tablette sans lever les yeux d'abord, comme si le nom qu'il allait appeler n'était qu'un parmi des dizaines.</p>
+    </div>
+
+    <div class="dialogue-block">
+      <div class="dial-line">
+        <div class="dial-who officiel">OFFICIEL</div>
+        <div class="dial-text">— Sujet quarante-sept. Kurosawa… Kael.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Kael lâcha la main d'Amara avec un soin particulier — pas brusquement, pas comme un geste indifférent, mais avec la précision de quelqu'un qui sait que la façon dont on pose quelque chose compte autant que le geste lui-même. Il sentit les doigts de son frère hésiter une fraction de seconde avant de le laisser partir.</p>
+    </div>
+
+    <div class="dialogue-block">
+      <div class="dial-line">
+        <div class="dial-who amara">AMARA (presque inaudible)</div>
+        <div class="dial-text">— Nii-san…</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Kael avança.</p>
+
+      <p>Le couloir qui menait à la capsule était plus court qu'il n'y paraissait depuis la file — une dizaine de mètres à peine, délimité par des barrières basses et des lumières encastrées dans le sol. Il marchait à son rythme normal, ni précipité ni délibérément lent. Son regard parcourait les capteurs en couronne autour de la capsule, notant leur orientation, leur espacement, la fréquence probable de leur rotation. Quarante hertz, estima-t-il. Peut-être quarante-cinq.</p>
+
+      <p>La capsule se referma derrière lui avec un déclic mécanique propre.</p>
+
+      <p>À l'intérieur, l'air était légèrement différent — plus filtré, peut-être, ou simplement l'effet de l'espace confiné. Kael prit position au centre, les bras le long du corps, et regarda droit devant lui. Pas l'officiel derrière la vitre. Les capteurs. Il les regardait comme il regardait tout — avec l'attention calme de quelqu'un qui est là pour apprendre, pas pour performer.</p>
+    </div>
+
+    <div class="dialogue-block">
+      <div class="dial-line">
+        <div class="dial-who officiel">OFFICIEL</div>
+        <div class="dial-text">— Analyse standard. Restez immobile, s'il vous plaît.</div>
+      </div>
+    </div>
+
+    <div class="pensee">Je sais ce que vous cherchez. Des vibrations. Des fréquences. Un signal que vos instruments peuvent lire et cataloguer. Je me demande si vous trouverez quelque chose.</div>
+
+    <div class="prose">
+      <p>La machine s'activa avec un bourdonnement grave qui montait progressivement — un son qui semblait venir du sol autant que des murs. Les capteurs s'illuminèrent un à un, envoyant des ondes invisibles à travers l'espace de la capsule. Sur les écrans au-dehors, des données commencèrent à défiler. Kael vit le processus dans le reflet de la vitre en face de lui — les chiffres qui s'accumulaient, les lignes qui se traçaient, les graphes qui prenaient forme.</p>
+
+      <p>Puis les graphes ralentirent.</p>
+
+      <p>Puis ils s'arrêtèrent.</p>
+
+      <p>L'écran principal afficha deux lignes de texte.</p>
+
+      <p class="no-indent" style="text-align:center;font-family:'Shippori Mincho', serif;font-size:clamp(14px,2vw,18px);font-weight:800;color:rgba(201,168,76,0.5);letter-spacing:4px;padding:16px 0;">「SIGNAL NON DÉTECTÉ」</p>
+
+      <p>Le bourdonnement de la machine continuait. Mais les officiels, eux, s'étaient arrêtés.</p>
+    </div>
+
+    <div class="aura-note">Quelqu'un dans la salle — une femme, adulte, venue accompagner son propre enfant — porta la main à sa gorge sans comprendre pourquoi. Elle regarda autour d'elle. Chercha la source d'un malaise qu'elle ne pouvait pas nommer. Ses yeux passèrent sur la capsule, sur le petit garçon qui se tenait immobile à l'intérieur, et continuèrent leur chemin. Elle murmura quelque chose à la personne à côté d'elle. L'autre ne l'entendit pas.</div>
+
+    <div class="dialogue-block">
+      <div class="dial-line">
+        <div class="dial-who officiel">OFFICIEL 1</div>
+        <div class="dial-text">— Il n'y a… rien ?</div>
+      </div>
+      <div class="dial-line">
+        <div class="dial-who officiel">OFFICIEL 2</div>
+        <div class="dial-text">— C'est impossible. Relancez le protocole.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>À l'intérieur de la capsule, Kael entendit tout. La salle était conçue pour l'isolation — mais pas pour empêcher d'entendre ceux qui chuchotent trop fort parce qu'ils ont oublié que l'enfant à l'intérieur n'est pas sourd.</p>
+
+      <p>La machine repartit. Plus fort, cette fois. Le bourdonnement monta d'une octave, les lumières dans la salle baissèrent légèrement sous la consommation d'énergie supplémentaire. Les capteurs tournaient plus vite. Les ondes couvraient maintenant chaque centimètre carré de la capsule — Kael le sentait comme on sent une légère pression d'air qui change de direction.</p>
+
+      <p>Il ne bougea pas.</p>
+
+      <p>Les ondes passaient sur lui. À travers lui, peut-être. Ou autour de lui. Il n'aurait pas pu dire exactement — il n'avait pas de mot pour décrire ce que son corps faisait avec ces signaux, parce qu'il ignorait encore ce que son corps était capable de faire. Mais il y avait quelque chose — une sensation diffuse, comme un écho entendu de très loin, qui ressemblait à de la reconnaissance. Comme si ces ondes rencontraient autre chose que le vide et décidaient de ne pas en parler.</p>
+
+      <p>L'écran principal s'afficha à nouveau.</p>
+
+      <p class="no-indent" style="text-align:center;font-family:'Shippori Mincho', serif;font-size:clamp(14px,2vw,18px);font-weight:800;color:rgba(201,168,76,0.5);letter-spacing:4px;padding:16px 0;">「SIGNAL NON DÉTECTÉ — ERREUR SYSTÈME ?」</p>
+    </div>
+  </div>
+
+  <div class="rupture">— —</div>
+
+  <!-- ═══ PARTIE IV ═══ -->
+  <div class="partie" id="p4">
+    <div class="partie-header">
+      <span class="partie-num">PARTIE IV</span>
+      <div class="partie-line"></div>
+    </div>
+    <div class="partie-title">Cas Zéro</div>
+
+    <div class="prose">
+      <p>L'officiel senior s'approcha du poste de contrôle avec la démarche de quelqu'un habitué à être le dernier recours. Il était plus âgé que les autres, les tempes grisonnantes, l'expression d'un homme qui en avait vu assez pour ne plus être surpris par grand-chose. Il regarda les données à l'écran. Il regarda la capsule. Il regarda l'enfant à l'intérieur — immobile, les bras le long du corps, qui le regardait en retour avec des yeux absolument calmes.</p>
+
+      <p>Quelque chose dans ce regard le mit mal à l'aise. Il ne s'y attarda pas.</p>
+    </div>
+
+    <div class="dialogue-block">
+      <div class="dial-line">
+        <div class="dial-who officiel">OFFICIEL SENIOR</div>
+        <div class="dial-text">— Ce n'est pas une erreur système. La machine fonctionne. C'est le sujet.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>La capsule s'ouvrit. Kael sortit. Il se tint dans le couloir blanc, sous les lumières froides, et balaya la salle d'un regard lent — de gauche à droite, méthodiquement. Les officiels qui prenaient des notes en évitant de croiser son regard. Les enfants dans la file qui chuchotaient. Les parents dans les tribunes du fond qui regardaient dans sa direction avec des expressions variées — curiosité, pitié, un peu de malaise que personne n'aurait admis.</p>
+
+      <p>Amara était toujours exactement où Kael l'avait laissé. Il regardait vers Kael depuis la file avec une attention totale, le menton légèrement relevé, comme s'il refusait de courber la tête.</p>
+    </div>
+
+    <div class="dialogue-block">
+      <div class="dial-line">
+        <div class="dial-who officiel">OFFICIEL SENIOR</div>
+        <div class="dial-text">— Sujet quarante-sept. Kurosawa Kael. Classification : Cas Zéro. Aucune Aura détectable. Dossier transmis pour examen complémentaire.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Il y eut un silence. Puis les murmures commencèrent — progressivement, comme une eau qui cherche ses fissures. Kael les entendait tous distinctement. Il les enregistrait.</p>
+    </div>
+
+    <div class="dialogue-block">
+      <div class="dial-line">
+        <div class="dial-who foule">UNE VOIX</div>
+        <div class="dial-text">— Cas Zéro ? C'est quoi ça… il a aucune Aura du tout ?</div>
+      </div>
+      <div class="dial-line">
+        <div class="dial-who foule">UNE AUTRE VOIX</div>
+        <div class="dial-text">— Même pas un Rang dix. Il n'existe pas pour le système.</div>
+      </div>
+      <div class="dial-line">
+        <div class="dial-who foule">UN ENFANT DANS LA FILE</div>
+        <div class="dial-text">— Ha. Rang zéro… même pas la peine de venir.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Kael n'accéléra pas le pas. Il ne rougit pas. Il ne baissa pas les yeux. Il marcha jusqu'à la file, se plaça à côté d'Amara, et attendit — parce que la procédure voulait qu'Amara passe à son tour dans vingt minutes.</p>
+
+      <p>Amara lui prit la main sans un mot.</p>
+
+      <p>Kael la laissa prendre.</p>
+    </div>
+
+    <div class="pensee">Ce que je ressens en ce moment n'est pas de la honte. Ce n'est pas de la tristesse. C'est quelque chose de plus précis — la sensation d'une question qui vient de se poser clairement pour la première fois. La machine n'a rien trouvé. Ça signifie deux choses possibles. Soit je ne suis rien. Soit je suis quelque chose que la machine ne sait pas chercher. Ces deux hypothèses méritent d'être vérifiées. J'ai le temps.</div>
+
+    <div class="aura-note">Dans la salle, sans que personne ne le remarque, le garçon de onze ans qui avait obtenu un Rang 6 se retourna brusquement vers l'endroit où Kael se tenait. Il ne savait pas pourquoi. Il avait senti quelque chose — comme si quelqu'un avait posé une main lourde sur son épaule. Il ne vit qu'un enfant ordinaire qui attendait, les bras le long du corps. Il se retourna vers l'avant, légèrement perturbé, et n'y pensa plus.</div>
+  </div>
+
+  <div class="rupture">— —</div>
+
+  <!-- ═══ PARTIE V ═══ -->
+  <div class="partie" id="p5">
+    <div class="partie-header">
+      <span class="partie-num">PARTIE V</span>
+      <div class="partie-line"></div>
+    </div>
+    <div class="partie-title">Ryo Ashida</div>
+
+    <div class="prose">
+      <p>Après les tests, les familles sortaient par groupes. Le flux était organisé — des officiels guidaient les enfants classés vers des guichets différents selon leur rang, distribuaient des documents, expliquaient les prochaines étapes. Kael et Amara n'eurent pas de guichet. On leur remit une enveloppe — mince, fermée — avec un tampon rouge dans le coin supérieur gauche. Kael glissa l'enveloppe dans sa poche sans l'ouvrir.</p>
+
+      <p>Ils prirent la sortie latérale. C'est dans la ruelle adjacente qu'ils le trouvèrent — ou plutôt, c'est lui qui les trouva.</p>
+
+      <p>Ryo Ashida avait quatorze ans. Il était déjà grand pour son âge — des épaules larges qui avaient l'air d'appartenir à quelqu'un de plus vieux, une façon de se tenir qui prenait de la place sans effort. Son dossard portait un insigne différent des autres enfants — il n'avait pas passé le test aujourd'hui, il était là pour autre chose. L'insigne de l'Œil Blanc, junior division. Kael le nota.</p>
+
+      <p>Il avait les yeux gris-bleu pâle et la certitude tranquille de quelqu'un qui n'a pas encore perdu.</p>
+    </div>
+
+    <div class="dialogue-block">
+      <div class="dial-line">
+        <div class="dial-who ryo">RYO</div>
+        <div class="dial-text">— Cas Zéro. J'avais jamais vu ça en vrai.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Deux garçons de son âge se tenaient légèrement en retrait — des suiveurs, estima Kael, pas des menaces indépendantes. Il mit Amara derrière lui d'un geste automatique, sans détacher son regard de Ryo.</p>
+    </div>
+
+    <div class="dialogue-block">
+      <div class="dial-line">
+        <div class="dial-who kael">KAEL</div>
+        <div class="dial-text">— Dégage.</div>
+      </div>
+      <div class="dial-line">
+        <div class="dial-who ryo">RYO</div>
+        <div class="dial-text">— Tu parles fort pour quelqu'un qui n'existe pas sur les registres.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Ryo activa son Aura. C'était un geste propre, efficace — la marque d'un entraînement sérieux. Une énergie cinétique blanche entoura ses poings, stable et bien définie. Rang 4, au bas mot. Peut-être Rang 3 déjà, vu la densité.</p>
+
+      <p>Il frappa.</p>
+
+      <p>Kael n'était plus là.</p>
+
+      <p>Pas à grande vitesse. Pas avec un pouvoir visible. Il avait simplement bougé — précisément, économiquement — exactement là où le coup n'arrivait pas. Comme s'il l'avait vu partir avant que Ryo lui-même ait décidé de le lancer.</p>
+
+      <p>Parce que c'était exactement ce qui s'était passé. L'épaule droite de Ryo avait pivoté de douze degrés avant le coup — un pattern que Kael avait mémorisé en regardant les combats d'entraînement dans la cour de son école depuis six mois. Son temps de réaction était de trois dixièmes de seconde. La ruelle faisait trois mètres de large. Il y avait exactement un endroit où se placer.</p>
+    </div>
+
+    <div class="pensee">Tu t'es préparé à taper. Tu ne t'es pas préparé à rater.</div>
+
+    <div class="dialogue-block">
+      <div class="dial-line">
+        <div class="dial-who kael">KAEL</div>
+        <div class="dial-text">— Tu t'es préparé à taper. Tu ne t'es pas préparé à rater.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Ryo se retourna vite — plus vite que Kael ne l'avait calculé, ce qui était une information utile. Il relança une seconde attaque, plus puissante, son Aura explosant autour de lui dans un halo blanc qui illumina brièvement les murs gris de la ruelle. Un coup droit chargé, destiné à ne pas manquer.</p>
+
+      <p>Kael attrapa son poignet à l'instant de l'impact.</p>
+
+      <p>Pas pour bloquer — pour diriger. Il utilisa l'élan de Ryo, le fit pivoter sur son propre axe, et l'accompagna jusqu'au sol avec la précision d'un mécanisme bien huilé. Pas de coup. Pas de violence inutile. Juste de la physique appliquée par quelqu'un qui avait mémorisé chaque technique de projection disponible dans les livres accessibles à un enfant de dix ans.</p>
+
+      <p>Ryo toucha le sol.</p>
+
+      <p>Il y eut un silence.</p>
+
+      <p>Les deux garçons qui l'accompagnaient ne bougèrent pas.</p>
+
+      <p>Ryo, allongé dans la ruelle, regardait le ciel entre deux immeubles. Puis il tourna la tête vers Kael — qui se tenait à deux mètres de lui, parfaitement immobile, et le regardait avec la même expression qu'il avait eue dans la capsule. Calme. Attentif. Comme s'il attendait de voir ce qui allait se passer ensuite.</p>
+
+      <p>Quelque chose dans ce regard fit taire Ryo Ashida pour la première fois de la journée.</p>
+
+      <p>Ce n'était pas la défaite qui le faisait taire. Il avait déjà perdu des combats — rarement, mais ça arrivait. C'était autre chose. C'était l'impossibilité de ce qu'il venait de voir. Un Cas Zéro. Un enfant sans Aura, sans rang, sans rien selon les registres officiels. Qui l'avait battu sans utiliser un seul pouvoir visible. Comme si les règles du jeu qu'il connaissait depuis toujours ne s'appliquaient tout simplement pas à ce garçon-là.</p>
+    </div>
+
+    <div class="dialogue-block">
+      <div class="dial-line">
+        <div class="dial-who ryo">RYO (lentement)</div>
+        <div class="dial-text">— Comment tu… t'as pas d'Aura—</div>
+      </div>
+      <div class="dial-line">
+        <div class="dial-who kael">KAEL</div>
+        <div class="dial-text">— Je sais. Et pourtant.</div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Kael prit la main d'Amara et repartit sans se retourner.</p>
+
+      <p>Ryo resta au sol encore un moment — pas parce qu'il était blessé, mais parce qu'il regardait la silhouette qui s'éloignait et qu'il essayait de comprendre ce qu'il venait de voir. Il ne trouva pas de réponse. C'était la première fois depuis longtemps qu'une question restait sans réponse dans sa tête.</p>
+
+      <p>Ce serait loin d'être la dernière.</p>
+    </div>
+
+    <div class="aura-note">Dans la ruelle déserte quelques minutes après leur départ, un chat errant s'approcha de l'endroit où Kael s'était tenu. Il s'arrêta. Il flaira le sol. Puis il recula d'un bon mètre, les poils légèrement dressés, et repartit en longeant le mur opposé — le plus loin possible de cet endroit précis. Certaines choses laissent des traces que seuls les animaux savent lire.</div>
+  </div>
+
+  <div class="rupture">— —</div>
+
+  <!-- ═══ PARTIE VI ═══ -->
+  <div class="partie" id="p6">
+    <div class="partie-header">
+      <span class="partie-num">PARTIE VI</span>
+      <div class="partie-line"></div>
+    </div>
+    <div class="partie-title">La Nuit Après</div>
+
+    <div class="prose">
+      <p>Ils rentrèrent à pied. C'était un trajet d'une demi-heure que Kael connaissait par cœur — chaque coin de rue, chaque boulangerie fermée le lundi, chaque flaque de lumière jaune sous les réverbères. Amara parla pendant presque tout le chemin. Il décrivit en détail comment Ryo avait touché le sol, ce qu'il avait eu l'air de penser au moment de comprendre qu'il avait perdu, ce que les deux garçons en retrait avaient fait exactement. Sa version des événements était légèrement différente de celle de Kael — plus dramatique, avec plus de commentaires sur les expressions faciales — mais dans les grandes lignes, juste.</p>
+
+      <p>Kael l'écouta. Il répondait quand Amara lui posait des questions directes. Sinon, il marchait et réfléchissait.</p>
+
+      <p>L'appartement était petit et propre. Deux chambres dont une qu'ils partageaient. Des livres partout — pas en désordre, mais organisés d'une façon que seul Kael comprenait vraiment. Il s'occupa du dîner pendant qu'Amara prenait sa douche, puis ils mangèrent ensemble sans beaucoup parler.</p>
+
+      <p>Amara s'endormit rapidement. Il dormait toujours rapidement — un talent que Kael avait longtemps observé avec quelque chose qui ressemblait à de l'admiration distante.</p>
+
+      <p>Kael, lui, s'assit dans le noir.</p>
+
+      <p>Il était assis dos au mur, entre leurs deux lits, dans l'obscurité complète de la chambre. La fenêtre laissait passer un rectangle de lumière orange depuis la rue — assez pour voir les contours d'Amara qui dormait, régulièrement, sans s'inquiéter de quoi que ce soit. Kael regarda sa propre main, paume vers le haut, dans cette lumière insuffisante.</p>
+
+      <p>Il pensa à la machine.</p>
+
+      <p>Il pensa aux ondes qui avaient glissé sur lui — ou à travers lui, ou autour. L'écho lointain qu'il avait senti, cette sensation de reconnaissance diffuse. Il pensa à Ryo Ashida qui regardait dans sa direction depuis le sol avec des yeux gris-bleu qui avaient perdu leur certitude pour la première fois. Il pensa à la femme dans la salle qui avait posé sa main sur sa gorge sans comprendre pourquoi.</p>
+
+      <p>Il pensa à l'officiel qui avait ralenti le pas en passant près de lui.</p>
+
+      <p>Et il comprit — ou plutôt, il formula clairement ce qu'il avait senti sans pouvoir le nommer depuis des mois — que quelque chose en lui n'obéissait pas aux règles que le monde avait établies. Pas parce qu'il était vide. Parce qu'il était autre chose. Quelque chose pour lequel les instruments n'avaient pas encore de nom.</p>
+
+      <p>Il ferma les yeux. Il se concentra — sans savoir vraiment sur quoi se concentrer, juste vers l'intérieur, vers cette zone obscure et dense qui semblait être là depuis toujours sans qu'il l'ait jamais regardée directement.</p>
+
+      <p>Quelque chose bougea.</p>
+
+      <p>Pas une lumière. Pas une chaleur. Quelque chose de beaucoup plus subtil — une distorsion, comme si l'espace juste au-dessus de sa paume hésitait, comme si la réalité elle-même marquait une pause pendant une fraction de seconde avant de reprendre son cours normal.</p>
+
+      <p>Kael rouvrit les yeux.</p>
+
+      <p>Il regarda sa main. Elle était exactement comme avant — peau noire dans la lumière orange, lignes de la paume, rien d'extraordinaire.</p>
+
+      <p>Mais là — il l'avait senti. Quelque chose.</p>
+
+      <p>Il referma la main lentement.</p>
+    </div>
+
+    <div class="pensee">Je ne sais pas encore ce que c'est. Je ne sais pas encore ce que je suis. Mais je vais le comprendre. Et ensuite — personne ne touche à Amara.</div>
+
+    <div class="prose">
+      <p>Il s'allongea sur le sol, les bras croisés sur la poitrine, et attendit que le sommeil veuille bien venir.</p>
+
+      <p>Dans la rue en bas, un chat longea le trottoir du côté opposé à l'immeuble — instinctivement, sans raison apparente, en accélérant légèrement le pas quand il passa devant leur fenêtre.</p>
+
+      <p>À trois rues de là, dans un appartement propre et discret, Ryo Ashida était assis dans son propre lit et regardait le plafond. Ses mains étaient à plat sur ses genoux. Il ne dormait pas non plus.</p>
+
+      <p>Et quelque part dans les serveurs classifiés d'une organisation dont Kael n'avait pas encore de nom, un dossier venait de s'ouvrir. Numéro 047. Cas Zéro. Comportement : anormal. Classification du risque : à déterminer.</p>
+
+      <p>La nuit de Tokyo continuait autour de tout ça — indifférente, lumineuse, bruyante — sans savoir qu'elle venait de voir commencer quelque chose qu'elle ne comprendrait pas avant des années.</p>
+    </div>
+
+    <div class="final-quote">
+      <div class="fq-text">
+        Ce jour-là, les machines avaient dit que je n'existais pas.<br>
+        Elles avaient tort.<br>
+        Mais je n'étais pas encore en mesure de leur prouver.
+      </div>
+      <span class="fq-cite">— KAEL KUROSAWA · Narration, Saison 3</span>
+    </div>
+  </div>
+
+  <!-- NEXT -->
+  <div class="next-chapter">
+    <div class="nc-arrow">→</div>
+    <div class="nc-info">
+      <div class="nc-label">PROCHAIN CHAPITRE</div>
+      <div class="nc-title">Chapitre 2 — "Les Rues ne Mentent Pas"</div>
+      <div class="nc-sub">Kael commence à cartographier le monde des pouvoirs. Et le monde commence à le sentir.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="recit-footer">
+  <span class="rf-kanji">要塞</span>
+  <div class="rf-text">SAISON 1 · CHAPITRE 1 · RÉCIT NARRATIF · PREMIÈRE VERSION</div>
+  <div class="rf-text" style="margin-top:6px;color:rgba(90,90,106,0.5)">À VALIDER AVANT LE CHAPITRE 2</div>
+</div>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold:0.06 });
+  document.querySelectorAll('.partie').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
